@@ -24,7 +24,6 @@ module.exports = {
 
     },
     saveRequest: (data) => {
-        
         const http = "http://localhost:8000/api/request/store";
 
         return axios.post(http,data).then((response) => {
