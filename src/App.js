@@ -1,43 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+
+import {connect} from 'react-redux'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 
-import Login from './components/login/login';
-import Dashboard from './components/dashboard/dashboard';
-
+import {Login} from './modules/login'
+import {Dashboard} from './modules/dashboard'
 
 class App extends Component {
-  
-  constructor(props) {
-    
-    super(props);
-    
-    this.toggle = this.toggle.bind(this);
-
-  }
-
-  toggle() {
-
-  }
-
-  renderLogin() {
-    return (
-      <main className="container-fluid">
-          <div className="row justify-content-center">
-            <div className="col-md-3">
-              
-            </div>
-          </div>
-      </main>
-    )
-  }
-
-
-  render() {
-    
-    return (
-      <Dashboard/>
-    );
-  }
+	
+	render() {
+		return (
+		<Router>
+			<div>
+		  		<Route exact path="/" exact component={Login} />
+				<Route exact path="/login" exact component={Login} />
+		  		<Route path="/dashboard" exact component={Dashboard} />
+			</div>
+		</Router>)	
+	}
 }
+
+
 
 export default App;

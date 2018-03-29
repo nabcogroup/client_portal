@@ -1,11 +1,28 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
+
+
 import 'bootstrap/dist/css/bootstrap.css'
 import './dist/css/app.css'
+
 import registerServiceWorker from './registerServiceWorker'
 
+import {Provider} from 'react-redux';
+import {BrowserRoute,Route} from 'react-router-dom';
+import store from './stores/store';
+
+import App from './App'
 
 
-ReactDOM.render(<App />, document.getElementById('root'))
+
+const Root = () => {
+    
+    return (
+        <Provider store={store}>
+            <App/>
+        </Provider>);
+}
+
+
+ReactDOM.render(Root(), document.getElementById('root'))
 registerServiceWorker()

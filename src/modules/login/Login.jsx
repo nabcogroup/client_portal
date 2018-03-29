@@ -1,37 +1,35 @@
 import React, { Component } from 'react';
 
-export default class Login extends Component {
+import {connect} from 'react-redux';
+import {authAction} from './../../actions/auth-action'
+
+class Login extends Component {
 
     constructor(props) {
-
+        
         super(props);
-        this.state = {
-            email: '',
-            password: '',
-            errors: {
-                email: '',
-                password: ''
-            }
-        }
-
+        
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-
     }
 
-    handleChange(key, value) {
-        this.setState({[key]: value});
-    }
-
+    
+    
 
     handleSubmit(e) {
-
         e.preventDefault();
-
        
+       const {dispatch} = this.props;
+
+       dispatch(authAction.authenticate({
+            email:this.email.value,
+            password: this.password.value}));
+        
     }
 
     render() {
+        
+        const {login} = this.props;
+        const message = !login.isOk ? login.message : "";
 
         return (
             <main className="container-fluid">
@@ -43,12 +41,13 @@ export default class Login extends Component {
                             <div className="card">
                                 <div className="card-header">< i className="fa fa-user"> </i> Login</div>
                                 <div className="card-body">
+                                    <span>{message}</span>
                                     <div className="form-group">
-                                        <input id="email" type="email" className="form-control" name="email" />
+                                        <input id="email" type="email" className="form-control" name="email" ref={input => this.email = input} />
                                         <span></span>
                                     </div>
                                     <div className="form-group">
-                                        <input id="password" type="password" className="form-control" name="password" />
+                                        <input id="password" type="password" className="form-control" ref={input => this.password = input} name="password" />
                                     </div>
                                 </div>
                                 <div className="card-footer">
@@ -59,7 +58,15 @@ export default class Login extends Component {
                     </div>
                 </div>
             </main>
-            
         );
     }
 }
+
+
+
+const mapStateToProps = state => ({
+    login: state.login
+})
+
+const connectedLoginPage = connect(mapStateToProps)(Login);
+export {connectedLoginPage as Login};

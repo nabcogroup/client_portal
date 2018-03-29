@@ -1,20 +1,20 @@
 import React, {Component} from "react";
-import {Navbar,
-        NavbarToggler,
-        NavbarBrand,
-        Button,
-        Input,
-        Form, FormGroup,Label,InputArea } from 'reactstrap'
+import {connect} from 'react-redux'
 
-
+import {Navbar, NavbarToggler, NavbarBrand} from 'reactstrap'
 import {MdSave}  from 'react-icons/lib/md';
+
 import ProfileView from './profile-view';
 import RequestList from './request-list';
-import RequestEntry from './request-entry';
+import RequestForm from './request-form';
 
-const api = require("../../utils/api")
 
-export default class Dashboard extends Component {
+import api from '../../utils/api';
+
+
+
+
+class Dashboard extends Component {
 
     constructor(props) {
         super(props);
@@ -25,7 +25,6 @@ export default class Dashboard extends Component {
             request: {}
         }
 
-        this.fetchProfile = this.fetchProfile.bind(this);
         this.renderPartialComponent = this.renderPartialComponent.bind(this);
         this.handleMenuClick = this.handleMenuClick.bind(this);
         this.createNew = this.createNew.bind(this);
@@ -33,19 +32,10 @@ export default class Dashboard extends Component {
     }
 
     componentDidMount() {
-        this.fetchProfile();
+        
     }
 
-    
-
-
-
-    fetchProfile() {
-        api.fetchProfileRepos().then((repos) => {
-            this.setState(prevState =>  ({profile: repos}))
-        });
-    }
-
+   
     createNew() {
         this.setState(prevState => ({currentView: "entry"}));
     }
@@ -55,18 +45,19 @@ export default class Dashboard extends Component {
             return (<ProfileView data={this.state.profile} parent={this} />)
         }
         else if(this.state.currentView == 'request') {
-            return (<RequestList data={this.state.profile} onCreateNew={this.createNew}/>);
+            return (<RequestList onCreateNew={this.createNew}/>);
         }
         else {
-            return (<RequestEntry data={this.state.profile}/>)
+            return (<RequestForm/>)
         }
     }
 
 
     handleMenuClick(e) {
+
         e.preventDefault();
-        var name = e.target.name;
-        this.setState(prevState => ({currentView: name}));
+        
+        this.setState({currentView: e.target.name});
     }
 
 
@@ -104,3 +95,6 @@ export default class Dashboard extends Component {
         )
     }
 }
+
+const dashboardPage = Dashboard;
+export {dashboardPage as Dashboard};
